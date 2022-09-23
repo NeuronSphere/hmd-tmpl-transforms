@@ -6,5 +6,8 @@
     "name": "Mickey Templates",
     "version": "0.1.10",
     "identifier": "ms-projects-admin-reg1-hmdd2-3647598595310"
+  },
+  "build": {
+    "commands": [["artifact", "store", {"path": "src/templates/", "content_item_type": "project_template_set"}]]
   }
 }
