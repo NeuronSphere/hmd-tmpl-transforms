@@ -1,0 +1,10 @@
+{
+  "identifier": "ms-projects-admin-reg1-hmdd2-158272007210",
+  "name": "hmd-tmpl-transforms",
+  "description": "Mickey base templates to generate various transform",
+  "project_type": {
+    "name": "Mickey Templates",
+    "version": "0.1.10",
+    "identifier": "ms-projects-admin-reg1-hmdd2-3647598595310"
+  }
+}
