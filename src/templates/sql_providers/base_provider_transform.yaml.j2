@@ -1,14 +1,16 @@
 type: provider
+{%- block query_config %}
+{%- endblock %}
 config:
     provider_package: {{ vars.provider_package }}
     provider_class: {{ vars.provider_class }}
     params:
 {%- filter indent(width=8) %}
-{% block params %}
-{% endblock %}
+{%- block params %}
+{%- endblock %}
 {%- endfilter %}
     run_params:
 {%- filter indent(width=8) %}
-{% block run_params %}
-{% endblock %}
+{%- block run_params %}
+{%- endblock %}
 {%- endfilter %}
