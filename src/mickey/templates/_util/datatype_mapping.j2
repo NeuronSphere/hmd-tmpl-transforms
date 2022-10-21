@@ -1,0 +1,26 @@
+{%- set type_map = {
+    "byte": "int",
+    "int": "int",
+    "integer": "int",
+    "int8": "int",
+    "int16": "int",
+    "int32": "int",
+    "int64": "BIGINT",
+    "uint8": "int",
+    "uint16": "int",
+    "uint32": "int",
+    "uint64": "int",
+    "string": "varchar",
+    "float": "double",
+    "float32": "double",
+    "float64": "double",
+    "enum": "int",
+    "boolean": "boolean",
+    "timestamp": "timestamp",
+    "datetime": "timestamp",
+    "date": "date"
+}-%}
+
+{% macro get_type(type) %}
+    {{- type_map[type] -}}
+{% endmacro %}

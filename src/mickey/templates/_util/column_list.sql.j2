@@ -1,0 +1,7 @@
+{%- from 'hmd-tmpl-transforms/_util/datatype_mapping.j2' import get_type -%}
+
+{%- macro column_list(columns) %}
+{%- for column in columns %}
+    "{{ column['definition']['name'].replace('.', '_') }}" {{ get_type(column['definition']["datatype"]) }},
+{%- endfor %}
+{% endmacro -%}

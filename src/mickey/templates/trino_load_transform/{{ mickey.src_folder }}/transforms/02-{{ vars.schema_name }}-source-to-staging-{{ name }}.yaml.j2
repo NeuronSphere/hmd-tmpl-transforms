@@ -1,0 +1,24 @@
+{%- extends "hmd-tmpl-transforms/sql_providers/base_provider_transform.yaml.j2" -%}
+{%- block query_config %}
+query_config:
+  query_name: by_transform_name_dependent_transform
+  query_value:
+    dep_tf_name: 01-{{ vars.schema_name }}-create-source-{{name}}
+    tf_name: 02-{{ vars.schema_name }}-source-to-staging-{{name}}
+{%- endblock %}
+{%- block params %}
+sql: |
+{%- filter indent(width=6) %}
+{% include 'hmd-tmpl-transforms/_util/insert_source_staging.sql.j2' %}
+{%- endfilter %}
+trino_conn_id: {{ vars.conn_name }}
+autocommit: true
+{%- endblock %}
+{%- block run_params %}
+schema_name: {{ vars.schema_name }}
+table_suffix: "{source_path[1]}_{source_path[2]}_{source_path[3]}"
+partition_values:
+    {%- for p_col in header_overrides.partition_columns.keys() %}
+    {{ p_col }}: "'{source_path[{{ loop.index }}]}'"
+    {%- endfor %}
+{%- endblock %}

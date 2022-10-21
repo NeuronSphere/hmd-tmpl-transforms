@@ -1,0 +1,17 @@
+{%- extends "hmd-tmpl-transforms/sql_providers/base_provider_transform.yaml.j2" -%}
+{%- block query_config %}
+query_config:
+  query_name: by_transform_name_dependent_transform
+  query_value:
+    dep_tf_name: 03-{{ vars.schema_name }}-staging-to-final-{{name}}
+    tf_name: 04-{{ vars.schema_name }}-drop-source-{{name}}
+{%- endblock %}
+{%- block params %}
+sql: |
+    DROP TABLE IF EXISTS {{ vars.schema_name }}_source.{{ name }}_{% raw %}{{ ns_context['table_suffix'].replace('-', '_') }}{% endraw %}
+trino_conn_id: {{ vars.conn_name }}
+autocommit: true
+{%- endblock %}
+{%- block run_params %}
+table_suffix: "{source_path[1]}_{source_path[2]}_{source_path[3]}"
+{%- endblock %}

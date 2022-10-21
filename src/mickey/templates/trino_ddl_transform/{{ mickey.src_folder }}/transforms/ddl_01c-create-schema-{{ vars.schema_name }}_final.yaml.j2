@@ -1,0 +1,17 @@
+{%- extends "hmd-tmpl-transforms/sql_providers/base_provider_transform.yaml.j2" -%}
+{%- block query_config %}
+query_config:
+    query_name: by_transform_name_dependent_transform
+    query_value:
+        dep_tf_name: ddl_01b-create-schema-{{ vars.schema_name }}_staging
+        tf_name: ddl_01c-create-schema-{{ vars.schema_name }}_final
+{%- endblock %}
+{%- block params %}
+sql: |
+    {% include 'hmd-tmpl-transforms/_util/create_schema.sql.j2' %}
+trino_conn_id: trino_conn
+autocommit: true
+{%- endblock %}
+{%- block run_params %}
+schema_name: {{ vars.schema_name }}_final
+{%- endblock %}

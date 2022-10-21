@@ -1,0 +1,14 @@
+{%- extends "hmd-tmpl-transforms/sql_providers/base_provider_transform.yaml.j2" -%}
+{%- block params %}
+sql: |
+{%- filter indent(width=6) %}
+{% include 'hmd-tmpl-transforms/_util/create_source_table.sql.j2' %}
+{%- endfilter %}
+trino_conn_id: {{ vars.conn_name }}
+autocommit: true
+{%- endblock %}
+{%- block run_params %}
+schema_name: {{ vars.schema_name }}
+table_suffix: "{source_path[1]}_{source_path[2]}_{source_path[3]}"
+entity_path: entity.content_item_path
+{%- endblock %}

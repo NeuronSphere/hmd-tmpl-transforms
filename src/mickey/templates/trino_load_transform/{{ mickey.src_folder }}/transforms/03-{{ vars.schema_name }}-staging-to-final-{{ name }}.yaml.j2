@@ -1,0 +1,39 @@
+{%- extends "hmd-tmpl-transforms/sql_providers/base_provider_transform.yaml.j2" -%}
+{% from 'hmd-tmpl-transforms/_util/column_list.sql.j2' import column_list -%}
+{%- block query_config %}
+query_config:
+  query_name: by_transform_name_dependent_transform
+  query_value:
+    dep_tf_name: 01-{{ vars.schema_name }}-source-to-staging-{{name}}
+    tf_name: 02-{{ vars.schema_name }}-staging-to-final-{{name}}
+{%- endblock %}
+{%- block params %}
+sql: |
+    INSERT INTO {{ vars.schema_name }}_final.{{ name }} (
+      SELECT 
+        {%- for col in columns %}
+        "{{ col['definition']['name'].replace('.', '_') }}",
+        {%- endfor %}
+        {%- for p_col in header_overrides.partition_columns.keys() %}
+        "p_{{ p_col.replace('-', '_') }}"{{ ', ' if not loop.last else '' }}
+        {%- endfor %}
+      FROM {{ vars.schema_name }}_staging.{{ name }}
+      WHERE 
+        {%- for p_col in header_overrides.partition_columns.keys() %}
+        p_{{ p_col }} = {{ '{{ ns_context["partition_values"]["' }}{{ p_col }}{{ '"] }}' }}{{' AND ' if not loop.last else ''}}
+        {%- endfor %}
+        {%- if vars.where_clause %}
+        AND ({%- include vars.where_clause %})
+        {%- endif %}
+    )
+trino_conn_id: {{ vars.conn_name }}
+autocommit: true
+{%- endblock %}
+{%- block run_params %}
+schema_name: {{ vars.schema_name }}
+table_suffix: "{source_path[1]}_{source_path[2]}_{source_path[3]}"
+partition_values:
+    {%- for p_col in header_overrides.partition_columns.keys() %}
+    {{ p_col }}: "'{source_path[{{ loop.index }}]}'"
+    {%- endfor %}
+{%- endblock %}

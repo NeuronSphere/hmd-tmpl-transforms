@@ -1,0 +1,27 @@
+{%- from 'hmd-tmpl-transforms/_util/datatype_mapping.j2' import get_type -%}
+
+{%- macro process_source_columns(columns) %}
+{%- set final_columns = dict() %}
+{%- for column in columns %}
+{%- if '.' in column['definition']['name'] %}
+{%- set row_name = column['definition']['name'].split('.')[0]%}
+{%- set row_col = column['definition']['name'].split('.')[1] %}
+{%- if '_' in row_name %}
+{%- set row_name = row_name.split('_')[1] %}
+{%- endif %}
+{%- if row_name not in final_columns %}
+{%- set x=final_columns.__setitem__(row_name, []) %}
+{%- endif %}
+{%- set x=final_columns[row_name].append('"' + row_col + '" ' + get_type(column['definition']['datatype']))%}
+{%- else %}
+{%- set x=final_columns.__setitem__(column['definition']['name'], get_type(column['definition']['datatype'])) %}
+{%- endif %}
+{%- endfor -%}
+{%- for name, type in final_columns.items() -%}
+{%- if not type is string %}
+"{{ name }}" ROW({%- for col in type %}{{ col }}{{ ', ' if not loop.last else '' }}{%- endfor %}){{ ', ' if not loop.last else '' }}
+{%- else %}
+"{{ name }}" {{ type }}{{ ', ' if not loop.last else '' }}
+{%- endif %}
+{%- endfor -%}
+{%- endmacro -%}
