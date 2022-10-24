@@ -9,7 +9,7 @@ create table if not exists {% raw %}{{ ns_context['schema_name'] }}{% endraw %}.
     "p_{{ p_col.replace('-', '_') }}" {{ get_type(datatype) }}{{ ', ' if not loop.last else '' }}
     {%- endfor %}
 ) with (
-  location = {{ ns_context['location'] }},
+  location = {% raw %}{{ ns_context['location'] }}{% endraw %},
   format = 'parquet',
   partitioned_by = ARRAY[ {% for p_col in partition_cols %}'p_{{ p_col.replace('-', '_') }}'{{ ', ' if not loop.last else '' }}{% endfor %} ]
 )
