@@ -1,1 +1,1 @@
-create schema if not exists {% raw %}{{ ns_context['schema_name'] }}{% endraw %}
+create schema if not exists {% raw %}{{ ns_context['schema_name'] }}{% endraw %} with (location = {% raw %}{{ ns_context['location'] }}{% endraw %}/{% raw %}{{ ns_context['schema_name'] }}{% endraw %})
