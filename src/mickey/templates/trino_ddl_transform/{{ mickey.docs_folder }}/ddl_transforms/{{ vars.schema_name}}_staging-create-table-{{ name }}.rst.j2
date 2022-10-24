@@ -1,0 +1,21 @@
+.. {{ vars.schema_name }}_staging-create-table-{{ name }}
+
+{{ name }} Staging Table Creation
+=================================================================
+
+Transform that runs Trino SQL statement to create staging table for {{ name }} tabular structure to ingest source data.
+
+SQL:
+++++
+
+.. code-block:: sql
+
+    {% include 'hmd-tmpl-transforms/_util/create_table.sql.j2' %}
+
+Default Run Parameters:
++++++++++++++++++++++++
+
+.. code-block:: yaml
+
+    schema_name: {{ vars.schema_name }}_staging
+    location: TRINO_BUCKET
