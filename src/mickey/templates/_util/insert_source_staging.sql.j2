@@ -18,5 +18,5 @@ INSERT INTO {% raw %}{{ ns_context['schema_name'] }}{% endraw %}_staging.{{name}
       {%- for p_col in header_overrides.partition_columns.keys() %}
       {{ '{{ ns_context["partition_values"]["' }}{{ p_col }}{{ '"] }}' }} AS "p_{{ p_col.replace('-', '_') }}"{{ ', ' if not loop.last else '' }}
       {%- endfor %}
-    FROM {% raw %}{{ ns_context['schema_name'] }}{% endraw %}_source.{{ name }}_{% raw %}{{ ns_context['table_suffix'].replace('-', '_') }}{% endraw %}
+    FROM {% raw %}{{ ns_context['schema_name'] }}{% endraw %}_source.{{ name }}_{{version.replace('.', '_')}}_{% raw %}{{ ns_context['table_suffix'].replace('-', '_') }}{% endraw %}
 )
