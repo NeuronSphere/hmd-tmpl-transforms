@@ -12,7 +12,7 @@
 {%- endfor -%}
 {%- endmacro %}
 
-INSERT INTO {% raw %}{{ ns_context['schema_name'] }}{% endraw %}_staging.{{name}} (
+INSERT INTO {% raw %}{{ ns_context['schema_name'] }}{% endraw %}_staging.{{name}}_{{version.replace('.', '_')}} (
     SELECT
       {{ prepare_source_select_cloumns(columns) }}
       {%- for p_col in header_overrides.partition_columns.keys() %}

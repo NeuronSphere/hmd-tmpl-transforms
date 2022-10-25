@@ -9,7 +9,7 @@ query_config:
 {%- endblock %}
 {%- block params %}
 sql: |
-    INSERT INTO {{ vars.schema_name }}_final.{{ name }} (
+    INSERT INTO {{ vars.schema_name }}_final.{{ name }}_{{version.replace('.', '_')}} (
       SELECT 
         {%- for col in columns %}
         "{{ col['definition']['name'].replace('.', '_') }}",
@@ -17,7 +17,7 @@ sql: |
         {%- for p_col in header_overrides.partition_columns.keys() %}
         "p_{{ p_col.replace('-', '_') }}"{{ ', ' if not loop.last else '' }}
         {%- endfor %}
-      FROM {{ vars.schema_name }}_staging.{{ name }}
+      FROM {{ vars.schema_name }}_staging.{{ name }}_{{version.replace('.', '_')}}
       WHERE 
         {%- for p_col in header_overrides.partition_columns.keys() %}
         p_{{ p_col }} = {{ '{{ ns_context["partition_values"]["' }}{{ p_col }}{{ '"] }}' }}{{' AND ' if not loop.last else ''}}
