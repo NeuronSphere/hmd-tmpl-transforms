@@ -1,6 +1,6 @@
 {% from 'hmd-tmpl-transforms/_util/process_source_columns.sql.j2' import process_source_columns -%}
 
-CREATE TABLE if not exists {% raw %}{{ ns_context['schema_name'] }}{% endraw %}_source.{{ name }}_{% raw %}{{ ns_context['table_suffix'].replace('-', '_') }}{% endraw %} (
+CREATE TABLE if not exists {% raw %}{{ ns_context['schema_name'] }}{% endraw %}_source.{{ name }}_{{version}}_{% raw %}{{ ns_context['table_suffix'].replace('-', '_') }}{% endraw %} (
     {%- filter indent(width=4) %}
     {{ process_source_columns(columns) }}
     {%- endfilter %}

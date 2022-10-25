@@ -3,7 +3,7 @@
 {% set partition_cols = header_overrides.partition_columns.keys() -%}
 
 
-create table if not exists {% raw %}{{ ns_context['schema_name'] }}{% endraw %}.{{name}} (
+create table if not exists {% raw %}{{ ns_context['schema_name'] }}{% endraw %}.{{name}}_{{version}} (
     {{ column_list(columns) }}
     {%- for p_col, datatype in header_overrides.partition_columns.items() %}
     "p_{{ p_col.replace('-', '_') }}" {{ get_type(datatype) }}{{ ', ' if not loop.last else '' }}

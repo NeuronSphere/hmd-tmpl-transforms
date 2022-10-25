@@ -10,8 +10,9 @@ SQL:
 
 .. code-block:: sql
 
-    CREATE OR REPLACE VIEW {% raw %}{{ ns_context['schema_name'] }}{% endraw %}.{{name}} AS
-    SELECT * FROM {{ vars.schema_name }}_final.{{ name }}
+{% filter indent(width=4)%}
+{% include 'hmd-tmpl-transforms/_util/create_ux_view.sql.j2' %}
+{% endfilter %}
 
 Default Run Parameters:
 +++++++++++++++++++++++

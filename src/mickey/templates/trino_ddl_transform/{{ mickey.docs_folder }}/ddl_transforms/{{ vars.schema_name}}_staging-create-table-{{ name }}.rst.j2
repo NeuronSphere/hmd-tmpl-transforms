@@ -10,7 +10,9 @@ SQL:
 
 .. code-block:: sql
 
-    {% include 'hmd-tmpl-transforms/_util/create_table.sql.j2' %}
+{% filter indent(width=4)%}
+{% include 'hmd-tmpl-transforms/_util/create_table.sql.j2' %}
+{% endfilter %}
 
 Default Run Parameters:
 +++++++++++++++++++++++
