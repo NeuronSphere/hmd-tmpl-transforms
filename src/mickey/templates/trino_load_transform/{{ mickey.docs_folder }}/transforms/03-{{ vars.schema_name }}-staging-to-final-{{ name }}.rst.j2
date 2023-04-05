@@ -1,0 +1,42 @@
+.. {{ vars.schema_name }}-staging-to-final-{{ name }}
+
+{{ name }} Staging Table Into Final Table
+=================================================================
+
+Transform that runs Trino SQL statement to load data from staging table into final table for {{ name }} tabular structure to ingest source data.
+
+SQL:
+++++
+
+.. code-block:: sql
+  
+    INSERT INTO {{ vars.schema_name }}_final.{{ name }}_{{version.replace('.', '_')}} (
+      SELECT 
+        {%- for col in columns %}
+        "{{ col['definition']['name'].replace('.', '_') }}",
+        {%- endfor %}
+        {%- for p_col in header_overrides.partition_columns.keys() %}
+        "p_{{ p_col.replace('-', '_') }}"{{ ', ' if not loop.last else '' }}
+        {%- endfor %}
+      FROM {{ vars.schema_name }}_staging.{{ name }}_{{version.replace('.', '_')}}
+      WHERE 
+        {%- for p_col in header_overrides.partition_columns.keys() %}
+        p_{{ p_col }} = {{ '{{ ns_context["partition_values"]["' }}{{ p_col }}{{ '"] }}' }}{{' AND ' if not loop.last else ''}}
+        {%- endfor %}
+        {%- if vars.where_clause %}
+        AND ({%- include vars.where_clause %})
+        {%- endif %}
+    )
+
+    
+Default Run Parameters:
++++++++++++++++++++++++
+
+.. code-block:: yaml
+
+    schema_name: {{ vars.schema_name }}
+    table_suffix: "{source_path[1]}_{source_path[2]}_{source_path[3]}"
+    partition_values:
+        {%- for p_col in header_overrides.partition_columns.keys() %}
+        {{ p_col }}: "'{source_path[{{ loop.index }}]}'"
+        {%- endfor %}

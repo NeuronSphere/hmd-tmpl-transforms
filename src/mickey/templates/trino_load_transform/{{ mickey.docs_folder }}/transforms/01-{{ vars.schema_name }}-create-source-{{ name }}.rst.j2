@@ -1,0 +1,24 @@
+.. {{ vars.schema_name }}-create-source-{{ name }}
+
+{{ name }} Source Table Creation
+=================================================================
+
+Transform that runs Trino SQL statement to create source table for {{ name }} tabular structure to ingest source data.
+
+SQL:
+++++
+
+.. code-block:: sql
+
+{% filter indent(width=4)%}
+{% include 'hmd-tmpl-transforms/_util/create_source_table.sql.j2' %}
+{% endfilter %}
+
+Default Run Parameters:
++++++++++++++++++++++++
+
+.. code-block:: yaml
+
+    schema_name: {{ vars.schema_name }}
+    table_suffix: "{source_path[1]}_{source_path[2]}_{source_path[3]}"
+    entity_path: entity.content_item_path

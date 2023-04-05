@@ -1,0 +1,27 @@
+.. {{ vars.schema_name }}-source-to-staging-{{ name }}
+
+{{ name }} Source Table Into Staging Table
+=================================================================
+
+Transform that runs Trino SQL statement to load data from source table into staging table for {{ name }} tabular structure to ingest source data.
+
+SQL:
+++++
+
+.. code-block:: sql
+
+{% filter indent(width=4)%}
+{% include 'hmd-tmpl-transforms/_util/insert_source_staging.sql.j2' %}
+{% endfilter %}
+
+Default Run Parameters:
++++++++++++++++++++++++
+
+.. code-block:: yaml
+
+    schema_name: {{ vars.schema_name }}
+    table_suffix: "{source_path[1]}_{source_path[2]}_{source_path[3]}"
+    partition_values:
+        {%- for p_col in header_overrides.partition_columns.keys() %}
+        {{ p_col }}: "'{source_path[{{ loop.index }}]}'"
+        {%- endfor %}
