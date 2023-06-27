@@ -8,7 +8,7 @@ query_config:
 {%- endblock %}
 {%- block params %}
 sql: |
-    DROP TABLE IF EXISTS {{ vars.schema_name }}_source.{{ name }}_{% raw %}{{ ns_context['table_suffix'].replace('-', '_') }}{% endraw %}
+    DROP TABLE IF EXISTS {{ vars.schema_name }}_source.{{ name }}_{{version.replace('.', '_')}}_{% raw %}{{ ns_context['table_suffix'].replace('-', '_') }}{% endraw %}
 trino_conn_id: {{ vars.conn_name }}
 autocommit: true
 {%- endblock %}

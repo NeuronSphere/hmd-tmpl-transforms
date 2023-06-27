@@ -1,0 +1,20 @@
+.. {{ vars.schema_name }}-drop-source-{{ name }}
+
+{{ name }} Source Table Delete
+=================================================================
+
+Transform that runs Trino SQL statement to drop source table for {{ name }} tabular structure to ingest source data.
+
+SQL:
+++++
+
+.. code-block:: sql
+
+    DROP TABLE IF EXISTS {{ vars.schema_name }}_source.{{ name }}_{{version.replace('.', '_')}}_{% raw %}{{ ns_context['table_suffix'].replace('-', '_') }}{% endraw %}
+
+Default Run Parameters:
++++++++++++++++++++++++
+
+.. code-block:: yaml
+
+    table_suffix: "{source_path[1]}_{source_path[2]}_{source_path[3]}"
