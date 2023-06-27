@@ -1,2 +1,2 @@
-CREATE OR REPLACE VIEW {% raw %}{{ ns_context['schema_name'] }}{% endraw %}.{{name}} AS
-SELECT * FROM {{ vars.schema_name }}_final.{{ name }}_{{version.replace('.', '_')}}
+CREATE OR REPLACE VIEW {% raw %}{{ ns_context['schema_name'] }}{% endraw %}_ux.{{name}} AS
+SELECT * FROM {% raw %}{{ ns_context['schema_name'] }}{% endraw %}_final.{{ name }}_{{version.replace('.', '_')}}
